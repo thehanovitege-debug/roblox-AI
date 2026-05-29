@@ -7,11 +7,13 @@ app.use(cors());
 app.use(express.json());
 
 const client = new Groq({
-  apiKey: process.env.GROQ_API_KEY   // ← ここが絶対に正しい
+  apiKey: process.env.GROQ_API_KEY
 });
 
+// ★ 正しい /chat エンドポイント（1つだけ）
 app.post("/chat", async (req, res) => {
-  const { player, message } = req.body;
+  const player = req.body.player || "Player";
+  const message = req.body.message || "";
 
   try {
     const completion = await client.chat.completions.create({
@@ -24,7 +26,8 @@ app.post("/chat", async (req, res) => {
     });
 
     const reply = completion.choices[0].message.content;
-    res.json({ reply });
+    res.json({ reply: reply });
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: "Groq API error" });
@@ -34,4 +37,5 @@ app.post("/chat", async (req, res) => {
 app.listen(3000, () => {
   console.log("Groq NPC サーバー起動 → http://localhost:3000");
 });
+
 
