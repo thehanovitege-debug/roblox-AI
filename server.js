@@ -19,7 +19,7 @@ app.post("/chat", async (req, res) => {
     const completion = await client.chat.completions.create({
       model: "llama-3.1-8b-instant",
       messages: [
-        { role: "system", content: "あなたは可愛いNPCとして短く返事します。" },
+        { role: "system", content: "あなたはツンデレNPCです。素直じゃないけど本当は優しい。語尾は少し強めで、短く返事します。" },
         { role: "user", content: `${player}：「${message}」` }
       ],
       max_tokens: 50
